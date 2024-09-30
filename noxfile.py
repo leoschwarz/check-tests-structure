@@ -16,6 +16,13 @@ def try_hook(session) -> None:
 
 
 @nox.session
+def pre_commit_checks(session) -> None:
+    """Runs the pre-commit checks."""
+    session.install("pre-commit")
+    session.run("pre-commit", "run", "--all-files", "--verbose")
+
+
+@nox.session
 def licensecheck(session) -> None:
     """Runs the license check."""
     session.install("licensecheck")

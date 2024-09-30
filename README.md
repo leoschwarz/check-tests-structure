@@ -3,6 +3,7 @@ The goal of this project is to validate whether your tests folder structure matc
 This can be useful for example, when setting up testing for a Python project where you want all modules to be tested.
 
 ## Installation
+This project requires Python 3.11 or later.
 Either install this package, e.g. with [pipx](https://pipx.pypa.io) or set up a pre-commit hook:
 
 ```toml

@@ -17,6 +17,10 @@ test = ["pytest"]
 [project.scripts]
 check-tests-structure = "check_tests_structure.__main__:app"
 
+[tool.check-tests-structure]
+sources_path = "src/check_tests_structure"
+tests_path = "tests"
+
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"

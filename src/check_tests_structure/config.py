@@ -20,15 +20,17 @@ class Config(BaseModel):
     allow_missing_sources: bool = False
     allow_missing_tests: bool = False
 
-    excluded_files: list[str] = ["__init__.py"]
+    excluded_files: list[str] = ["__init__.py", "__main__.py"]
 
 
-def load_config(path: Path) -> Config:
+def find_pyproject_toml(path: Path) -> Path | None:
+    if (path / "pyproject.toml").exists():
+        return path / "pyproject.toml"
     while path.name != "pyproject.toml" and path != path.parent:
         path = path.parent
-    if path.name != "pyproject.toml":
-        return Config()
-    return parse_pyproject_toml(path)[0]
+    if path.name == "pyproject.toml":
+        return path
+    return None
 
 
 def parse_pyproject_toml(path: Path) -> Config:

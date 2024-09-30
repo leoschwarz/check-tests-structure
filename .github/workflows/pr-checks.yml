@@ -1,0 +1,20 @@
+name: PR Checks
+on:
+  push:
+    branches: [main, stable]
+  pull_request:
+    branches: [main, stable]
+jobs:
+  nox:
+    name: PR Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.10
+      - run: python -m pip install --upgrade nox
+      - run: nox --non-interactive
+      - name: Print installed packages (always)
+        run: pip freeze
+        if: always()

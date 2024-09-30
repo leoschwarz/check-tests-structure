@@ -17,8 +17,8 @@ def run_check(config: Config) -> None:
     compare = Compare(config=config)
     differences = compare.get_differences()
     compare.print_differences(differences)
-    if (differences["source"] and not config.allow_missing_sources) or (
-        differences["test"] and not config.allow_missing_tests
+    if (differences["source"] and not config.allow_missing_tests) or (
+        differences["test"] and not config.allow_missing_sources
     ):
         sys.exit(1)
 

@@ -4,6 +4,7 @@ version = "0.0.1"
 description = ""
 authors = [{name = "Leonardo Schwarz", email = "leonardo.schwarz@fgcz.ethz.ch"}]
 readme = "README.md"
+license = { text = "MIT" }
 
 dependencies = [
     "cyclopts>=2.9",

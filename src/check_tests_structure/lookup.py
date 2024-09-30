@@ -9,6 +9,10 @@ class Lookup:
     def __init__(self, entries_list: list[dict[str, str]]):
         self._entries_list = entries_list
 
+    @property
+    def entries_list(self) -> list[dict[str, str]]:
+        return self._entries_list
+
     def exists(self, entry: dict[str, str]) -> bool:
         for entry_ in self._entries_list:
             if entry["dir"] == entry_["dir"] and entry["name"] == entry_["name"]:
@@ -43,3 +47,6 @@ class Lookup:
 
     def __iter__(self):
         return iter(self._entries_list)
+
+    def __len__(self):
+        return len(self._entries_list)

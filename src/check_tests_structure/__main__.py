@@ -4,7 +4,11 @@ from pathlib import Path
 import cyclopts
 
 from check_tests_structure.compare import Compare
-from check_tests_structure.config import Config, parse_pyproject_toml, find_pyproject_toml
+from check_tests_structure.config import (
+    Config,
+    parse_pyproject_toml,
+    find_pyproject_toml,
+)
 
 app = cyclopts.App()
 

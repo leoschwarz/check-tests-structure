@@ -25,7 +25,9 @@ def test_exists(mock_lookup):
 
 
 def test_fuzz_match(mock_lookup):
-    matches = mock_lookup.fuzzy_match({"dir": "/test_proj/dir2", "name": "filee2"}, n_max=1)
+    matches = mock_lookup.fuzzy_match(
+        {"dir": "/test_proj/dir2", "name": "filee2"}, n_max=1
+    )
     assert len(matches) == 1
     assert matches[0][0] == "/test_proj/dir2/file2"
     assert matches[0][1] > 97
@@ -33,7 +35,9 @@ def test_fuzz_match(mock_lookup):
 
 
 def test_print_fuzzy_matches(mocker, mock_lookup, capsys):
-    mocker.patch.object(Lookup, "fuzzy_match", return_value=[("/test_proj/dir2/file2", 97.7, 1)])
+    mocker.patch.object(
+        Lookup, "fuzzy_match", return_value=[("/test_proj/dir2/file2", 97.7, 1)]
+    )
     mock_lookup.print_fuzzy_matches(
         {"dir": "/test_proj/dir2", "name": "filee2"}, "{dir}/{name} ({score:.1f}%)"
     )

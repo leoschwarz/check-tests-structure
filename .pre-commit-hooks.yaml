@@ -1,0 +1,7 @@
+- id: check-tests-structure
+  name: Check Tests structure
+  description: This checks if the tests structure is appropriate
+  language: python
+  entry: check-tests-structure hook
+  pass_filenames: false
+  types: [python]

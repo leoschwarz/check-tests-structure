@@ -24,13 +24,15 @@ class Config(BaseModel):
 
 
 def find_pyproject_toml(path: Path) -> Path | None:
+    """Searches for the pyproject.toml file in the given path or any of its parent directories."""
+    while not (path / "pyproject.toml").exists():
+        if path == path.parent:
+            break
+        path = path.parent
     if (path / "pyproject.toml").exists():
         return path / "pyproject.toml"
-    while path.name != "pyproject.toml" and path != path.parent:
-        path = path.parent
-    if path.name == "pyproject.toml":
-        return path
-    return None
+    else:
+        return None
 
 
 def parse_pyproject_toml(path: Path) -> Config:

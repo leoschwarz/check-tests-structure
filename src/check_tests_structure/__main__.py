@@ -9,12 +9,15 @@ app = cyclopts.App()
 
 @app.default
 def check(sources_folder: Path, tests_folder: Path):
+    config = Config()
     compare = Compare(
-        config=Config(), paths=Paths(sources=sources_folder, tests=tests_folder)
+        config=config, paths=Paths(sources=sources_folder, tests=tests_folder)
     )
     differences = compare.get_differences()
     compare.print_differences(differences)
-    if differences["source"] or differences["test"]:
+    if (differences["source"] and not config.allow_missing_sources) or (
+        differences["test"] and not config.allow_missing_tests
+    ):
         sys.exit(1)
 
 

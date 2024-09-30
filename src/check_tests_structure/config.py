@@ -11,6 +11,9 @@ class Config(BaseModel):
     tests_glob: list[str] = ["test_*.py"]
     tests_pattern: Pattern = "test_(.*).py"
 
+    allow_missing_sources: bool = False
+    allow_missing_tests: bool = False
+
     excluded_files: list[str] = ["__init__.py"]
 
 

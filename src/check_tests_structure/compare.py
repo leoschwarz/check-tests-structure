@@ -24,8 +24,7 @@ class Compare:
 
         return differences
 
-    def print_differences(self):
-        differences = self.get_differences()
+    def print_differences(self, differences):
         if not differences["source"] and not differences["test"]:
             print("No differences found.")
             return

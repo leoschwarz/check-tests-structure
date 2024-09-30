@@ -1,5 +1,9 @@
 from __future__ import annotations
+
+from functools import cached_property
+
 from check_tests_structure.config import Config, Paths
+from check_tests_structure.lookup import Lookup
 
 
 class Compare:
@@ -8,18 +12,14 @@ class Compare:
         self._paths = paths
 
     def get_differences(self):
-        source_files = self.list_sources()
-        test_files = self.list_tests()
-
         # will contain the files only present in either the source or test folder
         differences = {"source": [], "test": []}
 
-        # Note: inefficient initial implementation
-        for source_file in source_files:
-            if not self._file_exists(source_file, test_files):
+        for source_file in self.source_files:
+            if not self.test_files.exists(source_file):
                 differences["source"].append(source_file)
-        for test_file in test_files:
-            if not self._file_exists(test_file, source_files):
+        for test_file in self.test_files:
+            if not self.source_files.exists(test_file):
                 differences["test"].append(test_file)
 
         return differences
@@ -33,12 +33,19 @@ class Compare:
             print("Source files not in test folder:")
             for source in differences["source"]:
                 print(f"  {source['dir']}/{source['original_name']}")
+                self.test_files.print_fuzzy_matches(
+                    source, "    - {dir}/{original_name} ({score:.1f}% match)"
+                )
         if differences["test"]:
             print("Test files not in source folder:")
             for test in differences["test"]:
                 print(f"  {test['dir']}/{test['original_name']}")
+                self.source_files.print_fuzzy_matches(
+                    test, "    - {dir}/{original_name} ({score:.1f}% match)"
+                )
 
-    def list_sources(self) -> list[dict[str, str]]:
+    @cached_property
+    def source_files(self) -> Lookup:
         """Lists all source files in the sources folder, relative to the sources folder."""
         paths = {
             path.relative_to(self._paths.sources)
@@ -46,12 +53,15 @@ class Compare:
             for path in self._paths.sources.rglob(glob_pattern)
             if path.name not in self._config.excluded_files
         }
-        return [
-            {"dir": str(path.parent), "original_name": path.name, "name": path.stem}
-            for path in sorted(paths)
-        ]
+        return Lookup(
+            [
+                {"dir": str(path.parent), "original_name": path.name, "name": path.stem}
+                for path in sorted(paths)
+            ]
+        )
 
-    def list_tests(self) -> list[dict[str, str]]:
+    @cached_property
+    def test_files(self) -> Lookup:
         """Lists all test files in the tests folder, relative to the tests folder."""
         paths = {
             path.relative_to(self._paths.tests)
@@ -67,7 +77,7 @@ class Compare:
             }
             for path in sorted(paths)
         ]
-        return [entry for entry in entries if entry["name"] is not None]
+        return Lookup([entry for entry in entries if entry["name"] is not None])
 
     def _get_test_name(self, filename: str) -> str | None:
         """Extracts the test name from the test filename."""

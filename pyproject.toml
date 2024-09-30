@@ -8,6 +8,7 @@ readme = "README.md"
 dependencies = [
     "cyclopts>=2.9",
     "pydantic>=2.9",
+    "rapidfuzz>=3.10",
 ]
 
 [project.optional-dependencies]

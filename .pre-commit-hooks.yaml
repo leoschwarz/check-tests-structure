@@ -2,6 +2,6 @@
   name: Check Tests structure
   description: This checks if the tests structure is appropriate
   language: python
-  entry: check-tests-structure hook
+  entry: check-tests-structure
   pass_filenames: false
   types: [python]

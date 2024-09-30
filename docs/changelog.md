@@ -4,6 +4,9 @@
 ## Fixed
 - The allow_missing options are now correctly implemented.
 
+## Changed
+- Simplify the entrypoint to not require any arguments by default.
+
 
 # \[0.0.1\] - 2024-09-30
 

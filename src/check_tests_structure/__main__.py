@@ -23,16 +23,10 @@ def run_check(config: Config) -> None:
         sys.exit(1)
 
 
-@app.command
-def check(sources_folder: Path, tests_folder: Path):
-    config = Config(sources_path=sources_folder, tests_path=tests_folder)
-    run_check(config)
-
-
-@app.command
-def hook():
+@app.default
+def run(path: Path | None = None) -> None:
     # find the pyproject.toml
-    pyproject_toml = find_pyproject_toml(Path.cwd())
+    pyproject_toml = find_pyproject_toml(path or Path.cwd())
     if not pyproject_toml:
         print("No pyproject.toml found.")
         sys.exit(1)

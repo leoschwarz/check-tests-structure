@@ -1,11 +1,17 @@
 from __future__ import annotations
-from pydantic import BaseModel, ConfigDict
-from typing import Pattern
+
+import tomllib
 from pathlib import Path
+from typing import Pattern
+
+from pydantic import BaseModel, ConfigDict
 
 
 class Config(BaseModel):
     model_config = ConfigDict(validate_default=True)
+
+    sources_path: Path
+    tests_path: Path
 
     inputs_glob: list[str] = ["*.py"]
     tests_glob: list[str] = ["test_*.py"]
@@ -17,6 +23,16 @@ class Config(BaseModel):
     excluded_files: list[str] = ["__init__.py"]
 
 
-class Paths(BaseModel):
-    sources: Path
-    tests: Path
+def load_config(path: Path) -> Config:
+    while path.name != "pyproject.toml" and path != path.parent:
+        path = path.parent
+    if path.name != "pyproject.toml":
+        return Config()
+    return parse_pyproject_toml(path)[0]
+
+
+def parse_pyproject_toml(path: Path) -> Config:
+    metadata = tomllib.loads(path.read_text())
+    return Config.model_validate(
+        metadata.get("tool", {}).get("check-tests-structure", {})
+    )

@@ -1,22 +1,22 @@
-import pytest
 from pathlib import Path
-from check_tests_structure.config import Config, Paths
+
+import pytest
+
 from check_tests_structure.compare import Compare
+from check_tests_structure.config import Config
 
 
 @pytest.fixture
 def mock_config():
-    return Config()
+    return Config(
+        sources_path=Path("/dev/null/sources"),
+        tests_path=Path("/dev/null/tests"),
+    )
 
 
 @pytest.fixture
-def mock_paths():
-    return Paths(sources=Path("/dev/null/sources"), tests=Path("/dev/null/tests"))
-
-
-@pytest.fixture
-def mock_compare(mock_config, mock_paths):
-    return Compare(mock_config, mock_paths)
+def mock_compare(mock_config):
+    return Compare(mock_config)
 
 
 def test_get_name(mock_compare):

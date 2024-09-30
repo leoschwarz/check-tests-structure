@@ -1,7 +1,7 @@
 [project]
 name = "check-tests-structure"
 version = "0.0.1"
-description = ""
+description = "Checks if your test folder structure corresponds to the source folder structure"
 authors = [{name = "Leonardo Schwarz", email = "leonardo.schwarz@fgcz.ethz.ch"}]
 readme = "README.md"
 license = { text = "MIT" }
